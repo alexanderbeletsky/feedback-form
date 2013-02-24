@@ -1,0 +1,59 @@
+<!DOCTYPE>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="/content/jasmine.css">
+
+  <!-- libs -->
+  <script src="/scripts/libs/modernizr-2.5.3.min.js"></script>
+  <script src="/scripts/libs/jquery-1.7.2.js"></script>
+  <script src="/scripts/libs/underscore.js"></script>
+  <script src="/scripts/libs/backbone.js"></script>
+  <script src="/scripts/libs/jasmine.js"></script>
+  <script src="/scripts/libs/jasmine-html.js"></script>
+  <script src="/scripts/libs/jasmine-jquery.js"></script>
+
+  <!-- sources -->
+  <script src="/scripts/src/models/Feedback.js"></script>
+  <script src="/scripts/src/models/FeedbackCollection.js"></script>
+  <script src="/scripts/src/views/FeedbackFormView.js"></script>
+  <script src="/scripts/src/views/FeedbackCollectionView.js"></script>
+
+  <!-- tests -->
+  <script src="/scripts/spec/models/Feedback.spec.js"></script>
+  <script src="/scripts/spec/views/FeedbackFormView.spec.js"></script>
+  <script src="/scripts/spec/views/FeedbackCollectionView.spec.js"></script>
+
+  <script type="text/javascript">
+    (function() {
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var htmlReporter = new jasmine.HtmlReporter();
+
+      jasmineEnv.addReporter(htmlReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
+      };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+
+    })();
+  </script>
+
+</head>
+
+<body>
+</body>
+</html>
