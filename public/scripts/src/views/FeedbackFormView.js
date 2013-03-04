@@ -39,12 +39,16 @@ var FeedbackFormView = Backbone.View.extend({
         }
 
         this.feedback = options.feedback;
+        this.collection = options.collection;
 
         this.model.on('invalid', this.showErrors);
     },
 
     render: function () {
         this.$el.html(_.template(this.template, {feedback: this.feedback}));
+
+        var collectionView = new FeedbackCollectionView({collection: this.collection});
+        this.$el.append(collectionView.render().el);
 
         return this;
     },
@@ -54,8 +58,9 @@ var FeedbackFormView = Backbone.View.extend({
 
         var me = this;
         var options = {
-            success: function () {
+            success: function (model) {
                 me.hideErrors();
+                me.collection.add(model);
             }
         };
 

@@ -5,17 +5,15 @@ $(function () {
             startApp(collection);
         },
         error: function () {
+            debugger;
             startApp(collection);
         }
     });
 
     function startApp(collection) {
         var model = new Feedback();
-        var view = new FeedbackFormView ({model: model, feedback: 'Thanks for support!' });
-        var collectionView = new FeedbackCollectionView({collection: collection});
+        var view = new FeedbackFormView ({model: model, collection: collection, feedback: 'Thanks for support!' });
 
-        // TODO: refactor
         $('#app').html(view.render().el);
-        $('#app').append(collectionView.render().el);
     }
 });

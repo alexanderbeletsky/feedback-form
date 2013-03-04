@@ -18,12 +18,19 @@ var FeedbackCollectionView = Backbone.View.extend({
         </li>\
     ',
 
+    emptyFeedbackTemplate: '\
+        <div class="well well-large">No feedback submitted yet...</div>\
+    ',
+
     initialize: function (options) {
+        _.bindAll(this);
+
         if (!(options && options.collection)) {
             throw new Error('collection is required');
         }
 
         this.collection = options.collection;
+        this.collection.on('add', this.feedbackAdded);
     },
 
     render: function () {
@@ -33,18 +40,22 @@ var FeedbackCollectionView = Backbone.View.extend({
     },
 
     renderEmptyFeedback: function () {
-        this.$el.addClass('well well-large').text('No feedback submitted yet...');
+        this.$el.html(this.emptyFeedbackTemplate);
 
         return this;
     },
 
     renderFeedbackList: function () {
-        var list = this.$el.html(this.template).find('.feedback-list');
+        this.list = this.$el.html(this.template).find('.feedback-list');
         this.collection.each(function(feedback) {
-            list.append(_.template(this.lineTemplate, feedback.toJSON()));
+            this.list.append(_.template(this.lineTemplate, feedback.toJSON()));
         }, this);
 
         return this;
+    },
+
+    feedbackAdded: function (feedback) {
+        this.renderFeedbackList();
     }
 
 });
