@@ -2,7 +2,7 @@ describe('FeedbackFormView.js spec', function () {
     var view, model;
 
     beforeEach(function () {
-        view = new FeedbackFormView({model: new Feedback(), feedback: 'TDD is awesome..' });
+        view = new FeedbackFormView({model: new Feedback(), collection: new FeedbackCollection(), feedback: 'TDD is awesome..' });
     });
 
     describe('when view is constructing', function () {

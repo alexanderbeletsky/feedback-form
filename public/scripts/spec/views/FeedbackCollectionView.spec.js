@@ -39,11 +39,11 @@ describe('FeedbackCollectionView.js spec', function () {
             });
 
             it ('should create large well', function () {
-                expect(view.$el).toHaveClass('well well-large');
+                expect(view.$el.find('div')).toHaveClass('well well-large');
             });
 
             it ('should have a message', function () {
-                expect(view.$el).toHaveText('No feedback submitted yet...');
+                expect(view.$el.find('div')).toHaveText('No feedback submitted yet...');
             });
 
         });
