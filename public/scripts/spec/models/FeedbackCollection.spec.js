@@ -128,7 +128,7 @@ describe('FeedbackCollection.js spec', function () {
     });
 
     describe('when adding elements', function () {
-        
+
         describe('by add method', function () {
             beforeEach(function () {
                 collection = new FeedbackCollection();
@@ -162,24 +162,46 @@ describe('FeedbackCollection.js spec', function () {
                     expect(collection.get('feedback-1').constructor).toBe(Feedback);
                 });
             });
-
-            describe('collection events', function () {
-                var listener;
-
-                beforeEach(function () {
-                    listener = jasmine.createSpy();
-                    collection.on('add', listener);
-                });
-
-                beforeEach(function () {
-                    collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
-                });
-
-                it ('should raise add event', function () {
-                    expect(listener).toHaveBeenCalled();
-                });
-            });
         });
     });
 
+    describe('collection events', function () {
+        var listener;
+
+        beforeEach(function () {
+            collection = new FeedbackCollection();
+        });
+
+        beforeEach(function () {
+            listener = jasmine.createSpy();
+        });
+
+        describe('while adding elements', function () {
+            beforeEach(function () {
+                collection.on('add', listener);
+            });
+
+            beforeEach(function () {
+                collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+            });
+
+            it ('should raise add event', function () {
+                expect(listener).toHaveBeenCalled();
+            });
+        });
+
+        describe('while pusing elements', function () {
+            beforeEach(function () {
+                collection.on('add', listener);
+            });
+
+            beforeEach(function () {
+                collection.push({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+            });
+
+            it ('should raise add event', function () {
+                expect(listener).toHaveBeenCalled();
+            });
+        });
+    });
 });
