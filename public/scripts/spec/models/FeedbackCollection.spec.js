@@ -12,11 +12,29 @@ describe('FeedbackCollection.js spec', function () {
             });
         });
 
-        describe('with models', function () {
+        describe('with objects', function () {
             beforeEach(function () {
                 var models = [
                     {email: 'a@a.com', website: 'a.com', feedback: 'hello'},
                     {email: 'b@b.com', website: 'b.com', feedback: 'good bye'}
+                ];
+                collection = new FeedbackCollection(models);
+            });
+
+            it('should be lenght of 2', function () {
+                expect(collection.length).toBe(2);
+            });
+
+            it('should contain models inside', function () {
+                expect(collection.models).toBeDefined();
+            });
+        });
+
+        describe('with models', function () {
+            beforeEach(function () {
+                var models = [
+                    new Feedback({email: 'a@a.com', website: 'a.com', feedback: 'hello'}),
+                    new Feedback({email: 'b@b.com', website: 'b.com', feedback: 'good bye'})
                 ];
                 collection = new FeedbackCollection(models);
             });
@@ -127,40 +145,111 @@ describe('FeedbackCollection.js spec', function () {
         });
     });
 
-    describe('when adding elements', function () {
+    describe('when adding items', function () {
+        beforeEach(function () {
+            collection = new FeedbackCollection();
+        });
 
         describe('by add method', function () {
             beforeEach(function () {
-                collection = new FeedbackCollection();
+                collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
             });
 
-            describe('add as object', function () {
-                beforeEach(function () {
-                    collection.add({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
-                });
-
-                it('should be added', function () {
-                    expect(collection.get('feedback-1')).toBeDefined();
-                });
-
-                it('should be converted to model', function () {
-                    expect(collection.get('feedback-1').constructor).toBe(Feedback);
-                });
+            it('should be added', function () {
+                expect(collection.get('feedback-1')).toBeDefined();
             });
 
-            describe('add as model', function () {
+            it('should be converted to model', function () {
+                expect(collection.get('feedback-1').constructor).toBe(Feedback);
+            });
+
+            describe('with index specified', function () {
                 beforeEach(function () {
-                    var model = new Feedback({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
-                    collection.add(model);
+                    collection.add({id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'}, {at: 0});
                 });
 
-                it('should be added', function () {
-                    expect(collection.get('feedback-1')).toBeDefined();
+                it('should have 2 items in collection', function () {
+                    expect(collection.length).toBe(2);
                 });
 
-                it('should be type of model', function () {
-                    expect(collection.get('feedback-1').constructor).toBe(Feedback);
+                it('should have feedback-2 item at index 0', function () {
+                    expect(collection.at(0).id).toBe('feedback-2');
                 });
+            });
+        });
+
+        describe('by push method', function () {
+            beforeEach(function () {
+                collection.push({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+            });
+
+            it('should be added', function () {
+                expect(collection.get('feedback-1')).toBeDefined();
+            });
+
+            it('should be converted to model', function () {
+                expect(collection.get('feedback-1').constructor).toBe(Feedback);
+            });
+
+            describe('with next push', function () {
+                beforeEach(function () {
+                    collection.push({id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'});
+                });
+
+                it('should have 2 items in collection', function () {
+                    expect(collection.length).toBe(2);
+                });
+
+                it('should have feedback-1 item at index 0', function () {
+                    expect(collection.at(0).id).toBe('feedback-1');
+                });
+            });
+        });
+
+        describe('add as model', function () {
+            beforeEach(function () {
+                var model = new Feedback({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+                collection.add(model);
+            });
+
+            it('should be added', function () {
+                expect(collection.get('feedback-1')).toBeDefined();
+            });
+
+            it('should be type of model', function () {
+                expect(collection.get('feedback-1').constructor).toBe(Feedback);
+            });
+        });
+    });
+
+    describe('when removing items', function () {
+        beforeEach(function () {
+            collection = new FeedbackCollection();
+        });
+
+        beforeEach(function () {
+            collection.push({id: 'feedback-1', email: 'a@a.com', website: 'a.com', feedback: 'hello'});
+            collection.push({id: 'feedback-2', email: 'b@b.com', website: 'b.com', feedback: 'good bye'});
+        });
+
+        describe('by remove method', function () {
+            beforeEach(function () {
+                var model = collection.get('feedback-1');
+                collection.remove(model);
+            });
+
+            it('should be removed', function () {
+                expect(collection.get('feedback-1')).not.toBeDefined();
+            });
+        });
+
+        describe('by pop method', function () {
+            beforeEach(function () {
+                collection.pop();
+            });
+
+            it('should be removed', function () {
+                expect(collection.get('feedback-2')).not.toBeDefined();
             });
         });
     });
